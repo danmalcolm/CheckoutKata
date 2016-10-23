@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="CheckoutCalculator.cs" />
     <Compile Include="ISkuRepository.cs" />
+    <Compile Include="Order.cs" />
+    <Compile Include="OrderLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sku.cs" />
   </ItemGroup>
