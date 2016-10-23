@@ -2,7 +2,7 @@
 using System.Linq;
 using CheckoutKata.Catalogue;
 
-namespace CheckoutKata
+namespace CheckoutKata.Orders
 {
     /// <summary>
     /// Contains details of good purchased during a sale

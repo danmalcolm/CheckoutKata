@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CheckoutKata.Catalogue;
+using CheckoutKata.Orders;
 
 namespace CheckoutKata
 {

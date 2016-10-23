@@ -48,13 +48,11 @@
     <Compile Include="Discounts\IDiscountCache.cs" />
     <Compile Include="Discounts\SkuDiscountResultLine.cs" />
     <Compile Include="Discounts\DiscountRule.cs" />
-    <Compile Include="Order.cs" />
-    <Compile Include="OrderLine.cs" />
+    <Compile Include="Orders\Order.cs" />
+    <Compile Include="Orders\OrderLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Orders\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

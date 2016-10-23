@@ -1,4 +1,4 @@
-﻿namespace CheckoutKata
+﻿namespace CheckoutKata.Orders
 {
     /// <summary>
     /// Contains details of an individual line within an order

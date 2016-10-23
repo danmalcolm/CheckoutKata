@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using CheckoutKata.Orders;
 using FluentAssertions;
 using Xunit;
 
