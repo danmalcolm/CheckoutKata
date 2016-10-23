@@ -43,10 +43,8 @@
     <Compile Include="Catalogue\ISkuRepository.cs" />
     <Compile Include="Catalogue\Sku.cs" />
     <Compile Include="CheckoutCalculator.cs" />
-    <Compile Include="Discounts\CalculateDiscountRequest.cs" />
     <Compile Include="Discounts\SkuDiscountCalculation.cs" />
     <Compile Include="Discounts\IDiscountRuleCache.cs" />
-    <Compile Include="Discounts\SkuDiscountLine.cs" />
     <Compile Include="Discounts\DiscountRule.cs" />
     <Compile Include="Orders\Order.cs" />
     <Compile Include="Orders\OrderLine.cs" />
