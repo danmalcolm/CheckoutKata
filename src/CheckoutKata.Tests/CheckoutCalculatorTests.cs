@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using CheckoutKata.Discounts;
+using FluentAssertions;
 using Xunit;
 
 namespace CheckoutKata.Tests
@@ -23,7 +24,7 @@ namespace CheckoutKata.Tests
         {
             calculator.AddSku("A");
 
-            calculator.TotalSkuPrice.Should().Be(50m);
+            calculator.GetOrder().TotalPrice.Should().Be(50m);
         }
 
         [Fact]
@@ -32,7 +33,7 @@ namespace CheckoutKata.Tests
             calculator.AddSku("A");
             calculator.AddSku("A");
 
-            calculator.TotalSkuPrice.Should().Be(100m);
+            calculator.GetOrder().TotalPrice.Should().Be(100m);
         }
 
         [Fact]
@@ -43,7 +44,7 @@ namespace CheckoutKata.Tests
             calculator.AddSku("C");
             calculator.AddSku("D");
 
-            calculator.TotalSkuPrice.Should().Be(239m);
+            calculator.GetOrder().TotalPrice.Should().Be(239m);
         }
 
         [Fact]
@@ -58,7 +59,7 @@ namespace CheckoutKata.Tests
             calculator.AddSku("D");
             calculator.AddSku("D");
 
-            calculator.TotalSkuPrice.Should().Be(478m);
+            calculator.GetOrder().TotalPrice.Should().Be(478m);
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using CheckoutKata.Catalogue;
+using CheckoutKata.Discounts;
 using CheckoutKata.Orders;
 using FluentAssertions;
 using Xunit;
@@ -7,29 +10,58 @@ namespace CheckoutKata.Tests
 {
     public class OrderTests
     {
+        private Sku skuA = TestSkus.SkuA;
+        private Sku skuB= TestSkus.SkuB;
+
         [Fact]
-        public void should_add_orderlines()
+        public void should_add_sku_details_to_orderline()
         {
             var order = new Order();
-            order.AddSku(TestSkus.SkuA);
-            order.AddSku(TestSkus.SkuB);
+            order.AddOrderLine(TestSkus.SkuA, 3, 0, "");
+            order.AddOrderLine(TestSkus.SkuB, 4, 0, "");
 
             var expected = new[]
             {
-                new {SkuCode = TestSkus.SkuA.Code, UnitPrice = TestSkus.SkuA.UnitPrice, Quantity = 1},
-                new {SkuCode = TestSkus.SkuB.Code, UnitPrice = TestSkus.SkuB.UnitPrice, Quantity = 1}
+                new {SkuCode = skuA.Code, OriginalUnitPrice = skuA.UnitPrice, UnitPrice = skuA.UnitPrice, Quantity = 3},
+                new {SkuCode = skuB.Code, OriginalUnitPrice = skuB.UnitPrice, UnitPrice = skuB.UnitPrice, Quantity = 4}
             };
             order.OrderLines.ShouldAllBeEquivalentTo(expected, options => options.ExcludingMissingMembers());
         }
 
         [Fact]
-        public void should_calculate_total_of_orderlines()
+        public void non_discounted_orderlines_should_not_have_discounted_total_price()
         {
             var order = new Order();
-            order.AddSku(TestSkus.SkuA);
-            order.AddSku(TestSkus.SkuB);
+            order.AddOrderLine(skuA, 3, 0, "");
 
-            order.TotalPrice.Should().Be(TestSkus.SkuA.UnitPrice + TestSkus.SkuB.UnitPrice);
+            var expected = new[]
+            {
+                new {SkuCode = skuA.Code, OriginalUnitPrice = skuA.UnitPrice, UnitPrice = skuA.UnitPrice, UnitDiscount = 0, TotalPrice = skuA.UnitPrice * 3 }
+            };
+            order.OrderLines.ShouldAllBeEquivalentTo(expected, options => options.ExcludingMissingMembers());
         }
+
+        [Fact]
+        public void discounted_orderlines_should_include_discounted_price_and_discount_details()
+        {
+            var order = new Order();
+            order.AddOrderLine(skuA, 3, 10, "3 for 120");
+
+            var expected = new[]
+            {
+                new {SkuCode = skuA.Code, OriginalUnitPrice = skuA.UnitPrice, UnitPrice = 40m, UnitDiscount = 10m, TotalPrice = 120, DiscountDescription = "3 for 120" }
+            };
+            order.OrderLines.ShouldAllBeEquivalentTo(expected, options => options.ExcludingMissingMembers());
+        }
+    }
+
+    public class TestDiscountRuleCache : IDiscountRuleCache
+    {
+        public TestDiscountRuleCache(IEnumerable<DiscountRule> activeRules)
+        {
+            ActiveRules = activeRules;
+        }
+
+        public IEnumerable<DiscountRule> ActiveRules { get; }
     }
 }

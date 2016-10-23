@@ -21,17 +21,16 @@ namespace CheckoutKata.Discounts
 
         public decimal DiscountedUnitPrice { get; }
 
-        public IEnumerable<SkuDiscountResultLine> CalculateDiscount(Sku sku, int quantity)
+        public SkuDiscountCalculation CalculateDiscount(string skuCode, int quantity)
         {
-            if (sku.Code == SkuCode)
+            if (skuCode == SkuCode)
             {
-                int discountedQuantity = quantity/BreakQuantity * BreakQuantity;
-                yield return new SkuDiscountResultLine(sku, discountedQuantity, DiscountedUnitPrice, this);
-                int remainingQuantity = quantity % BreakQuantity;
-                if (remainingQuantity > 0)
-                {
-                    yield return new SkuDiscountResultLine(sku, remainingQuantity, sku.UnitPrice, null);
-                }
+                int discountedQuantity = quantity / BreakQuantity * BreakQuantity;
+                return new SkuDiscountCalculation(quantity, discountedQuantity, DiscountedUnitPrice, this);
+            }
+            else
+            {
+                return null;
             }
         }
     }

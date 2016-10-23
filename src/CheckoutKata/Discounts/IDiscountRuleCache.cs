@@ -2,8 +2,11 @@
 
 namespace CheckoutKata.Discounts
 {
-    public interface IDiscountCache
+    public interface IDiscountRuleCache
     {
+        /// <summary>
+        /// Gets currently active sku discount rules
+        /// </summary>
         IEnumerable<DiscountRule> ActiveRules { get; }
     }
 }

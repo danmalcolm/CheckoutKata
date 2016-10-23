@@ -5,11 +5,13 @@
     /// </summary>
     public class OrderLine
     {
-        public OrderLine(string skuCode, int quantity, decimal unitPrice)
+        public OrderLine(string skuCode, int quantity, decimal originalUnitPrice, decimal unitDiscount, string discountDescription)
         {
             SkuCode = skuCode;
             Quantity = quantity;
-            UnitPrice = unitPrice;
+            OriginalUnitPrice = originalUnitPrice;
+            UnitDiscount = unitDiscount;
+            DiscountDescription = discountDescription;
         }
 
         /// <summary>
@@ -25,7 +27,16 @@
         /// <summary>
         /// The standard unit price for the Sku
         /// </summary>
-        public decimal UnitPrice { get; }
+        public decimal OriginalUnitPrice { get; }
+
+        public decimal UnitDiscount { get; set; }
+
+        public string DiscountDescription { get; set; }
+
+        /// <summary>
+        /// The unit price for the Sku in this order line including discounts
+        /// </summary>
+        public decimal UnitPrice => OriginalUnitPrice - UnitDiscount;
 
         public decimal TotalPrice => UnitPrice * Quantity;
     }

@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CheckoutKata.Catalogue;
+using CheckoutKata.Discounts;
 
 namespace CheckoutKata.Orders
 {
     /// <summary>
-    /// Contains details of good purchased during a sale
+    /// Contains details of items purchased during a sale
     /// </summary>
     public class Order
     {
@@ -13,9 +14,9 @@ namespace CheckoutKata.Orders
 
         public decimal TotalPrice => OrderLines.Sum(x => x.TotalPrice);
         
-        public void AddSku(Sku sku)
+        public void AddOrderLine(Sku sku, int quantity, decimal unitDiscount, string discountDescription)
         {
-            OrderLines.Add(new OrderLine(sku.Code, 1, sku.UnitPrice));
+            OrderLines.Add(new OrderLine(sku.Code, quantity, sku.UnitPrice, unitDiscount, discountDescription));
         }
     }
 }
