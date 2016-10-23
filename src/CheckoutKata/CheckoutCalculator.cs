@@ -36,7 +36,22 @@ namespace CheckoutKata
             foreach (var skuQuantity in skuQuantities)
             {
                 var sku = skuQuantity.Sku;
-                order.AddOrderLine(sku, skuQuantity.Quantity, 0m, "");
+                int quantity = skuQuantity.Quantity;
+                int discountedQuantity = 0;
+                var discount = discountRuleCache.ActiveRules
+                    .Select(x => x.CalculateDiscount(sku.Code, quantity))
+                    .FirstOrDefault(x => x != null);
+                if (discount != null)
+                {
+                    decimal unitDiscount = sku.UnitPrice - discount.DiscountedUnitPrice;
+                    order.AddOrderLine(sku, discount.DiscountedQuantity, unitDiscount, discount.Rule.Description);
+                    discountedQuantity = discount.DiscountedQuantity;
+                }
+                int remainingQuantity = quantity - discountedQuantity;
+                if (remainingQuantity > 0)
+                {
+                    order.AddOrderLine(sku, remainingQuantity, 0m, "");
+                }
             }
             return order;
         }

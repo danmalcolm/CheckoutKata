@@ -68,27 +68,56 @@ namespace CheckoutKata.Tests
         }
 
         [Fact]
-        public void should_include_discounted_lines_for_skus_matching_break_quantity_of_rule()
+        public void should_include_discounted_lines_for_skus_matching_break_quantities_of_rules()
         {
             var rule1 = new DiscountRule("A", 3, 40m, "3 for 120");
             var rule2 = new DiscountRule("B", 2, 22.5m, "2 for 45");
+            discountRuleCache.SetRules(new [] { rule1, rule2 });
 
             calculator.AddSku("A");
             calculator.AddSku("A");
             calculator.AddSku("A");
             calculator.AddSku("B");
             calculator.AddSku("B");
-
             var order = calculator.GetOrder();
 
             order.OrderLines.Should().HaveCount(2);
             var expected = new[]
             {
-                new {SkuCode = "A", OriginalUnitPrice = TestSkus.SkuA.UnitPrice, UnitPrice = 40m, UnitDiscount = 10m, TotalPrice = 120, DiscountDescription = "3 for 120" },
-                new {SkuCode = "B", OriginalUnitPrice = TestSkus.SkuB.UnitPrice, UnitPrice = 22.5m, UnitDiscount = 7.25m, TotalPrice = 45, DiscountDescription = "2 for 45" }
+                new {SkuCode = "A", Quantity = 3, OriginalUnitPrice = TestSkus.SkuA.UnitPrice, UnitPrice = 40m, UnitDiscount = 10m, TotalPrice = 120, DiscountDescription = "3 for 120" },
+                new {SkuCode = "B", Quantity = 2, OriginalUnitPrice = TestSkus.SkuB.UnitPrice, UnitPrice = 22.5m, UnitDiscount = 7.5m, TotalPrice = 45, DiscountDescription = "2 for 45" }
             };
 
             order.OrderLines.ShouldAllBeEquivalentTo(expected, options => options.ExcludingMissingMembers());
-        }   
+        }
+
+        [Fact]
+        public void should_include_discounted_and_non_discounted_lines_when_sku_quantity_not_divisible_by_break_quantity()
+        {
+            var rule1 = new DiscountRule("A", 3, 40m, "3 for 120");
+            var rule2 = new DiscountRule("B", 2, 22.5m, "2 for 45");
+            discountRuleCache.SetRules(new[] { rule1, rule2 });
+
+            calculator.AddSku("A");
+            calculator.AddSku("A");
+            calculator.AddSku("A");
+            calculator.AddSku("A");
+            calculator.AddSku("A");
+            calculator.AddSku("B");
+            calculator.AddSku("B");
+            calculator.AddSku("B");
+            var order = calculator.GetOrder();
+
+            order.OrderLines.Should().HaveCount(4);
+            var expected = new[]
+            {
+                new {SkuCode = "A", Quantity = 3, OriginalUnitPrice = TestSkus.SkuA.UnitPrice, UnitPrice = 40m, UnitDiscount = 10m, TotalPrice = 120, DiscountDescription = "3 for 120" },
+                new {SkuCode = "A", Quantity = 2, OriginalUnitPrice = TestSkus.SkuA.UnitPrice, UnitPrice = TestSkus.SkuA.UnitPrice, UnitDiscount = 0m, TotalPrice = 100, DiscountDescription = "" },
+                new {SkuCode = "B", Quantity = 2, OriginalUnitPrice = TestSkus.SkuB.UnitPrice, UnitPrice = 22.5m, UnitDiscount = 7.5m, TotalPrice = 45, DiscountDescription = "2 for 45" },
+                new {SkuCode = "B", Quantity = 1, OriginalUnitPrice = TestSkus.SkuB.UnitPrice, UnitPrice = TestSkus.SkuB.UnitPrice, UnitDiscount = 0m, TotalPrice = 30, DiscountDescription = "" }
+            };
+
+            order.OrderLines.ShouldAllBeEquivalentTo(expected, options => options.ExcludingMissingMembers());
+        }
     }
 }
