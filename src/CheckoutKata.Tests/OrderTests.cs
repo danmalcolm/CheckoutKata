@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using CheckoutKata.Catalogue;
-using CheckoutKata.Discounts;
 using CheckoutKata.Orders;
 using FluentAssertions;
 using Xunit;
@@ -53,15 +51,5 @@ namespace CheckoutKata.Tests
             };
             order.OrderLines.ShouldAllBeEquivalentTo(expected, options => options.ExcludingMissingMembers());
         }
-    }
-
-    public class TestDiscountRuleCache : IDiscountRuleCache
-    {
-        public TestDiscountRuleCache(IEnumerable<DiscountRule> activeRules)
-        {
-            ActiveRules = activeRules;
-        }
-
-        public IEnumerable<DiscountRule> ActiveRules { get; }
     }
 }

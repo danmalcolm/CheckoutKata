@@ -1,4 +1,5 @@
-﻿using CheckoutKata.Discounts;
+﻿using System.Linq;
+using CheckoutKata.Discounts;
 using FluentAssertions;
 using Xunit;
 
@@ -8,6 +9,7 @@ namespace CheckoutKata.Tests
     {
         private readonly TestSkuRepository repository;
         private readonly CheckoutCalculator calculator;
+        private readonly TestDiscountRuleCache discountRuleCache;
 
         public CheckoutCalculatorTests()
         {
@@ -16,7 +18,10 @@ namespace CheckoutKata.Tests
             repository.Add(TestSkus.SkuB);
             repository.Add(TestSkus.SkuC);
             repository.Add(TestSkus.SkuD);
-            calculator = new CheckoutCalculator(repository);
+
+            discountRuleCache = new TestDiscountRuleCache();
+
+            calculator = new CheckoutCalculator(repository, discountRuleCache);
         }
 
         [Fact]
@@ -61,5 +66,29 @@ namespace CheckoutKata.Tests
 
             calculator.GetOrder().TotalPrice.Should().Be(478m);
         }
+
+        [Fact]
+        public void should_include_discounted_lines_for_skus_matching_break_quantity_of_rule()
+        {
+            var rule1 = new DiscountRule("A", 3, 40m, "3 for 120");
+            var rule2 = new DiscountRule("B", 2, 22.5m, "2 for 45");
+
+            calculator.AddSku("A");
+            calculator.AddSku("A");
+            calculator.AddSku("A");
+            calculator.AddSku("B");
+            calculator.AddSku("B");
+
+            var order = calculator.GetOrder();
+
+            order.OrderLines.Should().HaveCount(2);
+            var expected = new[]
+            {
+                new {SkuCode = "A", OriginalUnitPrice = TestSkus.SkuA.UnitPrice, UnitPrice = 40m, UnitDiscount = 10m, TotalPrice = 120, DiscountDescription = "3 for 120" },
+                new {SkuCode = "B", OriginalUnitPrice = TestSkus.SkuB.UnitPrice, UnitPrice = 22.5m, UnitDiscount = 7.25m, TotalPrice = 45, DiscountDescription = "2 for 45" }
+            };
+
+            order.OrderLines.ShouldAllBeEquivalentTo(expected, options => options.ExcludingMissingMembers());
+        }   
     }
 }

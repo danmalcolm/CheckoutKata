@@ -10,7 +10,7 @@ namespace CheckoutKata.Tests
         [Fact]
         public void should_apply_discounts_to_matching_skus_with_break_quantity()
         {
-            var rule = new DiscountRule("A", 3, 40);
+            var rule = new DiscountRule("A", 3, 40, "3 for 120");
 
             var calculation = rule.CalculateDiscount("A", 3);
 
@@ -24,7 +24,7 @@ namespace CheckoutKata.Tests
         [Fact]
         public void should_apply_discounts_to_matching_skus_with_multiple_of_break_quantity()
         {
-            var rule = new DiscountRule("A", 3, 40);
+            var rule = new DiscountRule("A", 3, 40, "3 for 120");
 
             var calculation = rule.CalculateDiscount("A", 9);
 
@@ -38,7 +38,7 @@ namespace CheckoutKata.Tests
         [Fact]
         public void should_not_apply_discounts_to_non_matching_skus()
         {
-            var rule = new DiscountRule("A", 3, 40);
+            var rule = new DiscountRule("A", 3, 40, "3 for 120");
 
             var calculation = rule.CalculateDiscount("B", 9);
 
@@ -48,7 +48,7 @@ namespace CheckoutKata.Tests
         [Fact]
         public void should_combine_discounted_and_non_discounted_lines_if_sku_quantity_not_multiple_of_break_quantity()
         {
-            var rule = new DiscountRule("A", 3, 40);
+            var rule = new DiscountRule("A", 3, 40, "3 for 120");
 
             var calculation = rule.CalculateDiscount("A", 8);
 

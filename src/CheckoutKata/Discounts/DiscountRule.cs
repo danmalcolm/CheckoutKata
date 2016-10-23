@@ -8,11 +8,12 @@ namespace CheckoutKata.Discounts
     /// </summary>
     public class DiscountRule
     {
-        public DiscountRule(string skuCode, int breakQuantity, decimal discountedUnitPrice)
+        public DiscountRule(string skuCode, int breakQuantity, decimal discountedUnitPrice, string description)
         {
             SkuCode = skuCode;
             BreakQuantity = breakQuantity;
             DiscountedUnitPrice = discountedUnitPrice;
+            Description = description;
         }
 
         public string SkuCode { get; }
@@ -20,6 +21,8 @@ namespace CheckoutKata.Discounts
         public int BreakQuantity { get; }
 
         public decimal DiscountedUnitPrice { get; }
+
+        public string Description { get; }
 
         public SkuDiscountCalculation CalculateDiscount(string skuCode, int quantity)
         {

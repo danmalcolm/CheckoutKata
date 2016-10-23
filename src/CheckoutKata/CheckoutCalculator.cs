@@ -11,11 +11,12 @@ namespace CheckoutKata
     {
         private readonly ISkuRepository repository;
         private readonly IDiscountRuleCache discountRuleCache;
-        private List<Sku> skus = new List<Sku>();
+        private readonly List<Sku> skus = new List<Sku>();
 
-        public CheckoutCalculator(ISkuRepository repository)
+        public CheckoutCalculator(ISkuRepository repository, IDiscountRuleCache discountRuleCache)
         {
             this.repository = repository;
+            this.discountRuleCache = discountRuleCache;
         }
 
         public void AddSku(string skuCode)
