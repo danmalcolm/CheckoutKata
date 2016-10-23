@@ -11,10 +11,10 @@ namespace CheckoutKata.Tests
         public CheckoutCalculatorTests()
         {
             repository = new TestSkuRepository();
-            repository.Add(new Sku("A", 50m));
-            repository.Add(new Sku("B", 30m));
-            repository.Add(new Sku("C", 60m));
-            repository.Add(new Sku("D", 99m));
+            repository.Add(TestSkus.SkuA);
+            repository.Add(TestSkus.SkuB);
+            repository.Add(TestSkus.SkuC);
+            repository.Add(TestSkus.SkuD);
             calculator = new CheckoutCalculator(repository);
         }
 
@@ -47,7 +47,7 @@ namespace CheckoutKata.Tests
         }
 
         [Fact]
-        public void should_calculate_total_cost_for_mixed_skus_add_multiple_times()
+        public void should_calculate_total_cost_for_mixed_skus_added_multiple_times()
         {
             calculator.AddSku("A");
             calculator.AddSku("A");

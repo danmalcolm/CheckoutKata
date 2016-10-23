@@ -65,8 +65,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckoutCalculatorTests.cs" />
+    <Compile Include="OrderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestSkuRepository.cs" />
+    <Compile Include="TestSkus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
