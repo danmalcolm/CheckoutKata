@@ -12,6 +12,6 @@
             
         }
 
-        public decimal TotalSkuPrice { get; }
+        public decimal TotalSkuPrice => 10m;
     }
 }
