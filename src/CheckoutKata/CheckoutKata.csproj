@@ -40,12 +40,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Catalogue\ISkuRepository.cs" />
+    <Compile Include="Catalogue\Sku.cs" />
     <Compile Include="CheckoutCalculator.cs" />
-    <Compile Include="ISkuRepository.cs" />
+    <Compile Include="Discounts\CalculateDiscountRequest.cs" />
+    <Compile Include="Discounts\DiscountCalculation.cs" />
+    <Compile Include="Discounts\IDiscountCache.cs" />
+    <Compile Include="Discounts\SkuDiscountResultLine.cs" />
+    <Compile Include="Discounts\DiscountRule.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sku.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Orders\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

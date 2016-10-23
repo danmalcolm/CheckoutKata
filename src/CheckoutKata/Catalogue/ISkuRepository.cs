@@ -1,4 +1,4 @@
-﻿namespace CheckoutKata
+namespace CheckoutKata.Catalogue
 {
     /// <summary>
     /// Provides access to Sku objects

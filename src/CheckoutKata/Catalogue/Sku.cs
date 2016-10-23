@@ -1,4 +1,4 @@
-namespace CheckoutKata
+namespace CheckoutKata.Catalogue
 {
     /// <summary>
     /// Represents an individual "stock keeping unit" sold by the system
